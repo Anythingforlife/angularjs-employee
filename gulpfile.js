@@ -4,6 +4,17 @@ const sass = require('gulp-sass');
 const browserSync = require('browser-sync').create();
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var clean = require('gulp-clean');
+
+gulp.task('clean', function () {
+    return gulp.src('dist', {read: false, allowEmpty:true})
+        .pipe(clean());
+});
+
+gulp.task('assets', function () {
+    return gulp.src('./src/assets/**/*.*')
+        .pipe(gulp.dest('./dist/assets'));
+});
 
 gulp.task('sassVendor', function () {
     return gulp.src('./style.scss')
@@ -49,23 +60,24 @@ gulp.task('html', function () {
         }));
 });
 
-gulp.task('build', gulp.parallel('browserifyVendor', 'sassVendor', 'sass', 'html', 'browserify'), function (done) {
-    done();
-});
-
 gulp.task('browser-sync', function () {
     browserSync.init(null, {
-        open: false,
+        open: true,
         server: {
-            baseDir: 'dist'
+            baseDir: 'dist',
         }
-    });
+    })
 });
 
 gulp.task('watch', function (done) {
     gulp.watch(['./src/app/**/*.js'], { ignoreInitial: false }, gulp.series('browserify'));
     gulp.watch(['./src/app/**/*.html'], { ignoreInitial: false }, gulp.series('html'));
     gulp.watch(['./src/**/*.scss'], { ignoreInitial: false }, gulp.series('sass'));
+    gulp.watch(['./src/assets/**'], { ignoreInitial: false }, gulp.series('assets'));
+    done();
+});
+
+gulp.task('build', gulp.series('clean','assets','browserifyVendor', 'sassVendor', 'sass', 'html', 'browserify'), function (done) {
     done();
 });
 

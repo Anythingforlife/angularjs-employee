@@ -5,6 +5,11 @@ const browserSync = require('browser-sync').create();
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var clean = require('gulp-clean');
+var minifyHtml = require("gulp-minify-html");
+var cleanCSS = require('gulp-clean-css');
+var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
+
 
 gulp.task('clean', function () {
     return gulp.src('dist', {read: false, allowEmpty:true})
@@ -18,7 +23,8 @@ gulp.task('assets', function () {
 
 gulp.task('sassVendor', function () {
     return gulp.src('./style.scss')
-        .pipe(sass())
+        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(cleanCSS())
         .pipe(concat('vendor.css'))
         .pipe(gulp.dest('./dist/css')).pipe(browserSync.reload({
             stream: true
@@ -27,7 +33,7 @@ gulp.task('sassVendor', function () {
 
 gulp.task('sass', function () {
     return gulp.src("./src/scss/*.scss")
-        .pipe(sass())
+        .pipe(sass({ outputStyle: 'compressed' }))
         .pipe(concat('main.css'))
         .pipe(gulp.dest('./dist/css')).pipe(browserSync.reload({
             stream: true
@@ -38,6 +44,8 @@ gulp.task('browserifyVendor', function () {
     return browserify('./vendor.js')
         .bundle()
         .pipe(source('vendor.js'))
+        // .pipe(buffer())
+        // .pipe(uglify())
         .pipe(gulp.dest('./dist/js')).pipe(browserSync.reload({
             stream: true
         }));
@@ -47,6 +55,8 @@ gulp.task('browserify', function () {
     return browserify('./src/app/app.js')
         .bundle()
         .pipe(source('main.js'))
+        // .pipe(buffer())
+        // .pipe(uglify())
         .pipe(gulp.dest('./dist/js')).pipe(browserSync.reload({
             stream: true
         }));
@@ -54,6 +64,7 @@ gulp.task('browserify', function () {
 
 gulp.task('html', function () {
     return gulp.src('./src/**/*.html')
+        .pipe(minifyHtml())
         .pipe(gulp.dest('./dist/'))
         .pipe(browserSync.reload({
             stream: true

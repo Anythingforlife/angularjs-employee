@@ -16,7 +16,10 @@
     "bootstrap": "^4.4.1",
     "browser-sync": "^2.26.7",
     "browserify": "^16.5.0",
+    "gulp-angular-templatecache": "^3.0.0",
+    "gulp-ngtemplate": "^0.2.5",
     "jquery": "^3.4.1",
+    "merge-stream": "^2.0.0",
     "popper.js": "^1.16.0",
     "vinyl-source-stream": "^2.0.0"
   },

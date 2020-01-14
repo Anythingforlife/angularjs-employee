@@ -1,5 +1,6 @@
 <div ui-view='header'></div>
 <div ng-controller="homeCtrl as home">
-	<h1 ng-bind="home.welcomeText"></h1>
+	<h1 class="primary-color" ng-bind="home.welcomeText"></h1>
 	<button type="button" class="btn btn-primary">Primary</button>
+	<button type="button" class="btn btn-primary" ng-click="home.apply()">Theme</button>
 </div>

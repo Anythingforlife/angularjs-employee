@@ -1,3 +1,4 @@
-h1 {
-  color: green;
+$foreground-default: var(--foreground-default);
+.primary-color {
+  color: darken($foreground-default, 0.5);
 }

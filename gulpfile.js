@@ -9,6 +9,8 @@ var minifyHtml = require("gulp-minify-html");
 var cleanCSS = require('gulp-clean-css');
 var uglify = require('gulp-uglify');
 var buffer = require('vinyl-buffer');
+const mergeStream =   require('merge-stream');
+const templateCache = require('gulp-angular-templatecache');
 
 
 gulp.task('clean', function () {
@@ -63,6 +65,23 @@ gulp.task('browserify', function () {
 })
 
 gulp.task('html', function () {
+
+    // gulp.src('src/index.html')
+    //     .pipe(gulp.dest('./dist/'));
+
+        // Put our index.html in the dist folder
+        // const indexFile = gulp.src('src/index.html')
+        //   .pipe(gulp.dest('./dist/js'));
+      
+        // Process any other view files from app/views
+        // const views = gulp.src('./src/app/**/*.html')
+        //   .pipe(templateCache({
+        //     standalone: false
+        //   }))
+        //   .pipe(gulp.dest('dist/js'));
+      
+        // return mergeStream( views);
+      
     return gulp.src('./src/**/*.html')
         .pipe(minifyHtml())
         .pipe(gulp.dest('./dist/'))
